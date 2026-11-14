@@ -1,0 +1,406 @@
+{
+ "aspects": [
+  "Ember",
+  "Thorn",
+  "Stone",
+  "Storm",
+  "Tide"
+ ],
+ "dens": [
+  {
+   "id": 0,
+   "name": "Old Grist",
+   "squad": [
+    2,
+    0,
+    1
+   ],
+   "style": 0,
+   "teaches": "Swings first and thinks later. Guard, and punish.",
+   "tier": 1,
+   "title": "The Brawler"
+  },
+  {
+   "id": 1,
+   "name": "Mother Thorne",
+   "squad": [
+    1,
+    2,
+    4
+   ],
+   "style": 1,
+   "teaches": "Braces and counters. Crush her guard with Break.",
+   "tier": 2,
+   "title": "The Wall"
+  },
+  {
+   "id": 2,
+   "name": "Coin-Eyed Vesh",
+   "squad": [
+    3,
+    5,
+    0
+   ],
+   "style": 2,
+   "teaches": "Loves the heavy hit. A quick Strike stops it cold.",
+   "tier": 3,
+   "title": "The Gambler"
+  },
+  {
+   "id": 3,
+   "name": "The Auditor",
+   "squad": [
+    4,
+    7,
+    6
+   ],
+   "style": 3,
+   "teaches": "Counts your habits and counters them. Mix it up.",
+   "tier": 4,
+   "title": "The Reader"
+  },
+  {
+   "id": 4,
+   "name": "Madam Ruin",
+   "squad": [
+    8,
+    9,
+    5
+   ],
+   "style": 4,
+   "teaches": "Plays the odds every turn. Bring everything you know.",
+   "tier": 5,
+   "title": "The Closer"
+  }
+ ],
+ "items": [
+  {
+   "id": 1,
+   "kind": 0,
+   "name": "Wildfang",
+   "price": "250000000000000000000000",
+   "text": "+10% attack."
+  },
+  {
+   "id": 2,
+   "kind": 0,
+   "name": "Ironhide Plate",
+   "price": "250000000000000000000000",
+   "text": "+12% defence."
+  },
+  {
+   "id": 3,
+   "kind": 0,
+   "name": "Quickening Feather",
+   "price": "250000000000000000000000",
+   "text": "+12% speed."
+  },
+  {
+   "id": 4,
+   "kind": 0,
+   "name": "Heartstone",
+   "price": "250000000000000000000000",
+   "text": "+12% health."
+  },
+  {
+   "id": 5,
+   "kind": 0,
+   "name": "Rage Ember",
+   "price": "400000000000000000000000",
+   "text": "Rage fills 25% faster."
+  },
+  {
+   "id": 6,
+   "kind": 0,
+   "name": "Leech Thorn",
+   "price": "400000000000000000000000",
+   "text": "Heals for 12% of the damage dealt."
+  },
+  {
+   "id": 20,
+   "kind": 1,
+   "name": "Ember Haze",
+   "price": "150000000000000000000000",
+   "text": "A warm ember glow clings to the beast."
+  },
+  {
+   "id": 21,
+   "kind": 1,
+   "name": "Golden Halo",
+   "price": "200000000000000000000000",
+   "text": "Slow motes of gold circle the beast."
+  },
+  {
+   "id": 22,
+   "kind": 1,
+   "name": "Void Wisps",
+   "price": "200000000000000000000000",
+   "text": "Dark sparks drift up from its back."
+  },
+  {
+   "id": 23,
+   "kind": 1,
+   "name": "Storm Crown",
+   "price": "250000000000000000000000",
+   "text": "Small lightning arcs around its head."
+  },
+  {
+   "id": 40,
+   "kind": 2,
+   "name": "Thunderclap",
+   "price": "300000000000000000000000",
+   "text": "A thunderclap marks every knockout."
+  },
+  {
+   "id": 41,
+   "kind": 2,
+   "name": "Spirit Bell",
+   "price": "300000000000000000000000",
+   "text": "Golden bells ring out for every knockout."
+  },
+  {
+   "id": 42,
+   "kind": 2,
+   "name": "Red Moon",
+   "price": "500000000000000000000000",
+   "text": "The sky turns red when this beast wins a round."
+  }
+ ],
+ "rules": {
+  "den_min_bankroll": "500000000000000000000000",
+  "duel_rake_bps": "300",
+  "form_levels": [
+   1,
+   5,
+   12,
+   25,
+   50
+  ],
+  "form_names": [
+   "Cub",
+   "Prowler",
+   "Alpha",
+   "Dread",
+   "Mythic"
+  ],
+  "hire_fee_bps": "500",
+  "kill_xp": 15,
+  "level_stat_pct": 3,
+  "max_hire_fights": 20,
+  "min_duel_stake": "10000000000000000000000",
+  "move_clock_secs": 75,
+  "starting_essence": 100
+ },
+ "species": [
+  {
+   "aspect": 0,
+   "atk": 78,
+   "def": 48,
+   "forms": [
+    "Cinderpup",
+    "Emberjaw",
+    "Cindermaw",
+    "Blazemaw",
+    "Solarmaw"
+   ],
+   "hp": 410,
+   "id": 0,
+   "lore": "A furnace on four legs. Its hide is cooled slag and its bite is not.",
+   "name": "Cindermaw",
+   "price": "300000000000000000000000",
+   "rare": false,
+   "rig": 0,
+   "spd": 62,
+   "special": "Magma Rend"
+  },
+  {
+   "aspect": 1,
+   "atk": 70,
+   "def": 54,
+   "forms": [
+    "Sproutling",
+    "Thicketbuck",
+    "Briarhorn",
+    "Elderhorn",
+    "Worldroot"
+   ],
+   "hp": 460,
+   "id": 1,
+   "lore": "Old forest given a temper. Every hit it lands feeds it.",
+   "name": "Briarhorn",
+   "price": "300000000000000000000000",
+   "rare": false,
+   "rig": 0,
+   "spd": 52,
+   "special": "Strangleroot"
+  },
+  {
+   "aspect": 2,
+   "atk": 70,
+   "def": 66,
+   "forms": [
+    "Pebblit",
+    "Rockfist",
+    "Gravemaul",
+    "Cragmaul",
+    "Titanmaul"
+   ],
+   "hp": 520,
+   "id": 2,
+   "lore": "It was a cliff once. Then something woke it, and it has been angry since.",
+   "name": "Gravemaul",
+   "price": "300000000000000000000000",
+   "rare": false,
+   "rig": 1,
+   "spd": 34,
+   "special": "Faultbreaker"
+  },
+  {
+   "aspect": 3,
+   "atk": 78,
+   "def": 40,
+   "forms": [
+    "Zapling",
+    "Galewing",
+    "Skyrazor",
+    "Stormrazor",
+    "Tempestlord"
+   ],
+   "hp": 370,
+   "id": 3,
+   "lore": "You hear it after it has already hit you.",
+   "name": "Skyrazor",
+   "price": "300000000000000000000000",
+   "rare": false,
+   "rig": 3,
+   "spd": 88,
+   "special": "Thunderdive"
+  },
+  {
+   "aspect": 4,
+   "atk": 74,
+   "def": 48,
+   "forms": [
+    "Ripplet",
+    "Brinecoil",
+    "Undertow",
+    "Maelstrom",
+    "Abysscoil"
+   ],
+   "hp": 440,
+   "id": 4,
+   "lore": "Patient as deep water. It lets you tire before it tightens.",
+   "name": "Undertow",
+   "price": "300000000000000000000000",
+   "rare": false,
+   "rig": 2,
+   "spd": 66,
+   "special": "Riptide Coil"
+  },
+  {
+   "aspect": 0,
+   "atk": 88,
+   "def": 42,
+   "forms": [
+    "Sparkwyrm",
+    "Flarewyrm",
+    "Ashwyrm",
+    "Pyrewyrm",
+    "Sunwyrm"
+   ],
+   "hp": 390,
+   "id": 5,
+   "lore": "It swims through fire the way an eel swims through a river.",
+   "name": "Ashwyrm",
+   "price": "1200000000000000000000000",
+   "rare": true,
+   "rig": 2,
+   "spd": 72,
+   "special": "Pyre Spiral"
+  },
+  {
+   "aspect": 1,
+   "atk": 80,
+   "def": 44,
+   "forms": [
+    "Budwing",
+    "Fenwing",
+    "Mirewing",
+    "Bloomwing",
+    "Edenwing"
+   ],
+   "hp": 380,
+   "id": 6,
+   "lore": "Bog-born and beautiful, the way a poison flower is.",
+   "name": "Mirewing",
+   "price": "1200000000000000000000000",
+   "rare": true,
+   "rig": 3,
+   "spd": 82,
+   "special": "Spore Tempest"
+  },
+  {
+   "aspect": 2,
+   "atk": 82,
+   "def": 56,
+   "forms": [
+    "Chiplet",
+    "Flintfang",
+    "Shardfang",
+    "Glassfang",
+    "Prismfang"
+   ],
+   "hp": 440,
+   "id": 7,
+   "lore": "Volcanic glass grown into the shape of a hunter. Every edge is a blade.",
+   "name": "Shardfang",
+   "price": "1200000000000000000000000",
+   "rare": true,
+   "rig": 0,
+   "spd": 60,
+   "special": "Glass Guillotine"
+  },
+  {
+   "aspect": 3,
+   "atk": 78,
+   "def": 54,
+   "forms": [
+    "Staticub",
+    "Voltfist",
+    "Thunderhide",
+    "Stormhide",
+    "Skybreaker"
+   ],
+   "hp": 470,
+   "id": 8,
+   "lore": "Lightning keeps striking it. It has stopped noticing.",
+   "name": "Thunderhide",
+   "price": "1200000000000000000000000",
+   "rare": true,
+   "rig": 1,
+   "spd": 52,
+   "special": "Stormfall"
+  },
+  {
+   "aspect": 4,
+   "atk": 78,
+   "def": 48,
+   "forms": [
+    "Splashpup",
+    "Reefhound",
+    "Tidereaver",
+    "Deepreaver",
+    "Abyssreaver"
+   ],
+   "hp": 430,
+   "id": 9,
+   "lore": "It hunts the surf line, where prey has one foot in each world.",
+   "name": "Tidereaver",
+   "price": "1200000000000000000000000",
+   "rare": true,
+   "rig": 0,
+   "spd": 66,
+   "special": "Drowning Maw"
+  }
+ ]
+}

@@ -1,0 +1,154 @@
+/* Maul Street design tokens.
+ *
+ * A fight club crossed with a stock exchange, at night. The menus and the
+ * battle HUD both read their colours, type and spacing from here.
+ *
+ * Everything is sized from one unit, --u, which follows the height of the
+ * window: 14px at 1366x768, 16.5px at 1920x1080. Use the --s* steps for space
+ * and the --f* steps for type so both layers scale together.
+ */
+
+:root {
+  /* ---- Colour ----------------------------------------------------------- */
+  --bg: #0b0907; /* near-black, warm */
+  --panel: #15110d;
+  --panel-2: #1c1711; /* a raised row inside a panel */
+  --panel-3: #261e15; /* hover */
+  --hair: #3a2e22; /* hairlines */
+  --hair-soft: #2a2119;
+  --bone: #efe6d6; /* text */
+  --muted: #9c8f7c;
+  --dim: #6b6052;
+
+  --scarlet: #c8102e; /* primary action, danger */
+  --scarlet-hot: #e8203f;
+  --scarlet-deep: #7a0a1c;
+  --brass: #d8a548; /* money, prices, wins */
+  --brass-hot: #f6cf7a;
+  --brass-deep: #7d5c22;
+  --ember: #ff6a2a; /* energy accents */
+  --essence: #9fe6cc; /* Essence: won from the house, never NEAR */
+
+  --aspect-ember: #ff5a1f;
+  --aspect-thorn: #7bd23c;
+  --aspect-stone: #b9a27a;
+  --aspect-storm: #a78bff;
+  --aspect-tide: #35c9ff;
+  /* The same five, by aspect number (0 Ember .. 4 Tide). */
+  --aspect-0: var(--aspect-ember);
+  --aspect-1: var(--aspect-thorn);
+  --aspect-2: var(--aspect-stone);
+  --aspect-3: var(--aspect-storm);
+  --aspect-4: var(--aspect-tide);
+
+  /* Panels are translucent: the 3D stage shows through the middle of the screen. */
+  --panel-a: rgba(21, 17, 13, 0.9);
+  --panel-a-soft: rgba(21, 17, 13, 0.72);
+  --row-a: rgba(239, 230, 214, 0.035);
+  --row-a-hot: rgba(239, 230, 214, 0.075);
+  --veil: rgba(8, 6, 5, 0.78); /* behind a modal */
+  --brass-a: rgba(216, 165, 72, 0.14);
+  --scarlet-a: rgba(200, 16, 46, 0.16);
+
+  /* ---- Type ------------------------------------------------------------- */
+  --font-display: 'Bebas Neue', 'Barlow Condensed', 'Arial Narrow', Impact, sans-serif; /* headlines, big numbers, buttons */
+  --font-label: 'Barlow Condensed', 'Barlow', 'Arial Narrow', sans-serif; /* labels */
+  --font-body: 'Barlow', 'Segoe UI', system-ui, sans-serif; /* body */
+
+  --u: clamp(13px, 7.85px + 0.8vh, 18px);
+
+  --f-2xs: calc(var(--u) * 0.72);
+  --f-xs: calc(var(--u) * 0.8);
+  --f-sm: calc(var(--u) * 0.88);
+  --f-md: var(--u);
+  --f-lg: calc(var(--u) * 1.16);
+  --f-xl: calc(var(--u) * 1.4);
+  --f-2xl: calc(var(--u) * 1.75);
+  --f-3xl: calc(var(--u) * 2.3);
+  --f-4xl: calc(var(--u) * 3.2);
+  --f-5xl: calc(var(--u) * 4.6);
+
+  --track-display: 0.045em; /* letter-spacing for Bebas Neue */
+  --track-label: 0.09em; /* letter-spacing for small capital labels */
+
+  /* ---- Space ------------------------------------------------------------ */
+  --s1: calc(var(--u) * 0.25);
+  --s2: calc(var(--u) * 0.5);
+  --s3: calc(var(--u) * 0.75);
+  --s4: var(--u);
+  --s5: calc(var(--u) * 1.5);
+  --s6: calc(var(--u) * 2);
+  --s7: calc(var(--u) * 3);
+  --s8: calc(var(--u) * 4);
+
+  /* ---- Shape ------------------------------------------------------------ */
+  --cut-sm: calc(var(--u) * 0.5);
+  --cut-md: calc(var(--u) * 0.9);
+  --cut-lg: calc(var(--u) * 1.4);
+
+  /* ---- Motion: fast and physical ---------------------------------------- */
+  --t-fast: 120ms;
+  --t-med: 180ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-hit: cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+/* ---- The cut-corner panel ------------------------------------------------
+ *
+ * Top-left and bottom-right corners are sliced off. The hairline follows the
+ * cut. Three knobs, set on the element itself:
+ *
+ *   --cut   how deep the corner is sliced
+ *   --edge  the hairline colour
+ *   --fill  the panel colour (translucent by default)
+ *
+ * How it works: a 1px border draws the straight edges, clip-path removes the
+ * two corners, and two small gradient patches redraw the hairline along each
+ * diagonal. No wrapper element, no pseudo-element, and the fill can be see-through.
+ *
+ * --edge and --fill are registered as colours so they can be animated, and
+ * they do not inherit: a child never picks up its panel's edge by accident.
+ * (An outline is clipped away with the corners, so show focus by changing
+ * --edge and adding an inset box-shadow.)
+ */
+@property --edge {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+@property --fill {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: transparent;
+}
+
+.cut {
+  --cut: var(--cut-md);
+  --edge: var(--hair);
+  --fill: var(--panel-a);
+  --_d: calc(var(--cut) * 0.7071);
+  --_p: calc(var(--cut) + 3px);
+  transition:
+    --edge var(--t-fast) linear,
+    --fill var(--t-fast) linear;
+  border: 1px solid var(--edge);
+  background:
+    linear-gradient(135deg, var(--edge) calc(var(--_d) + 0.9px), transparent calc(var(--_d) + 1.7px)) top left / var(--_p) var(--_p) no-repeat border-box,
+    linear-gradient(315deg, var(--edge) calc(var(--_d) + 0.9px), transparent calc(var(--_d) + 1.7px)) bottom right / var(--_p) var(--_p) no-repeat border-box,
+    var(--fill);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+
+/* The same shape with one corner only (top-left), for tabs and tags. */
+.cut-1 {
+  --cut: var(--cut-sm);
+  --edge: var(--hair);
+  --fill: var(--panel-a);
+  --_d: calc(var(--cut) * 0.7071);
+  --_p: calc(var(--cut) + 3px);
+  border: 1px solid var(--edge);
+  background:
+    linear-gradient(135deg, var(--edge) calc(var(--_d) + 0.9px), transparent calc(var(--_d) + 1.7px)) top left / var(--_p) var(--_p) no-repeat border-box,
+    var(--fill);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%, 0 var(--cut));
+}

@@ -1,0 +1,13 @@
+[package]
+name = "maul-core"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "The rules of Maul Street: the fight engine, the house fighters and every price. Shared by the contract and the browser."
+
+[dependencies]
+borsh = { version = "1.5", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1"

@@ -1,0 +1,10 @@
+target/
+node_modules/
+web/dist/
+.claude/
+*.log
+.env
+.env.*
+docs/SUBMISSION.md
+film/
+neardev/

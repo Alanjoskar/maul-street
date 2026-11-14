@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maul Street: audio test</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230b0907'/%3E%3Cpath d='M10 50 L20 14 L32 38 L44 14 L54 50 L44 50 L40 32 L32 50 L24 32 L20 50Z' fill='%23c8102e'/%3E%3C/svg%3E" />
+    <style>
+      :root { color-scheme: dark; --bg: #0b0907; --panel: #17130f; --line: #2c241c; --ink: #e9dfd0; --dim: #9a8c7a; --red: #c8102e; --gold: #d9a441; }
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 20px 16px 60px; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, "Segoe UI", sans-serif; }
+      main { max-width: 1040px; margin: 0 auto; }
+      h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: 0.02em; }
+      h2 { font-size: 13px; margin: 26px 0 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.12em; }
+      p { margin: 4px 0; color: var(--dim); }
+      section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-top: 12px; }
+      section h2 { margin-top: 0; }
+      .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+      button { font: inherit; color: var(--ink); background: #241d16; border: 1px solid #3a2f24; border-radius: 6px; padding: 7px 12px; cursor: pointer; }
+      button:hover { border-color: var(--gold); }
+      button:active { transform: translateY(1px); }
+      button.primary { background: var(--red); border-color: var(--red); font-weight: 600; }
+      button.on { border-color: var(--gold); color: var(--gold); }
+      button small { color: var(--dim); margin-left: 6px; font-size: 11px; }
+      label { display: inline-flex; align-items: center; gap: 8px; color: var(--dim); min-width: 250px; }
+      label output { color: var(--ink); min-width: 3ch; font-variant-numeric: tabular-nums; }
+      input[type="range"] { accent-color: var(--red); width: 150px; }
+      #status { color: var(--gold); }
+      #log { margin: 0; max-height: 160px; overflow: auto; font: 12px/1.5 ui-monospace, Consolas, monospace; color: var(--dim); white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Maul Street: audio test</h1>
+      <p>Every track and effect, played through <code>src/audio.js</code>. Serve the <code>web</code> folder with any static server, or open this page under <code>npm run dev</code>.</p>
+      <p id="status">Press Start: browsers only allow sound after a click.</p>
+
+      <section>
+        <div class="row">
+          <button class="primary" id="start">Start audio</button>
+          <button id="mute">Mute</button>
+          <label>Master <input type="range" id="vol-master" min="0" max="1" step="0.01" /><output id="out-master"></output></label>
+          <label>Music <input type="range" id="vol-music" min="0" max="1" step="0.01" /><output id="out-music"></output></label>
+          <label>Effects <input type="range" id="vol-sfx" min="0" max="1" step="0.01" /><output id="out-sfx"></output></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Music</h2>
+        <div class="row" id="music"></div>
+        <div class="row" style="margin-top: 12px">
+          <label>Time scale <input type="range" id="scale" min="0.1" max="1" step="0.05" value="1" /><output id="out-scale">1</output></label>
+          <button id="slow">Slow motion (0.2) for 2 s</button>
+          <button id="heart">Heartbeat loop</button>
+          <label>Pan <input type="range" id="pan" min="-1" max="1" step="0.1" value="0" /><output id="out-pan">0</output></label>
+        </div>
+      </section>
+
+      <div id="groups"></div>
+
+      <section>
+        <h2>Last calls</h2>
+        <pre id="log"></pre>
+      </section>
+    </main>
+
+    <script type="module">
+      import { audio } from './src/audio.js'
+
+      const $ = (id) => document.getElementById(id)
+      const status = $('status')
+      const logBox = $('log')
+      const lines = []
+      const note = (text) => {
+        lines.unshift(`${new Date().toLocaleTimeString()}  ${text}`)
+        lines.length = Math.min(lines.length, 40)
+        logBox.textContent = lines.join('\n')
+      }
+      const TITLES = { ui: 'Menus and money', move: 'Movement', impact: 'Impacts', voice: 'Creature voices', fight: 'Fight system', status: 'Status effects' }
+
+      function button(label, hint, onClick) {
+        const el = document.createElement('button')
+        el.textContent = label
+        if (hint) {
+          const small = document.createElement('small')
+          small.textContent = hint
+          el.appendChild(small)
+        }
+        el.addEventListener('click', () => onClick(el))
+        return el
+      }
+
+      function build() {
+        const manifest = audio.manifest
+        const musicRow = $('music')
+        musicRow.replaceChildren()
+        for (const [name, entry] of Object.entries(manifest.music)) {
+          const hint = entry.loop ? `loop ${entry.loopLength.toFixed(1)} s, ${entry.bpm} BPM` : `${entry.duration.toFixed(1)} s`
+          musicRow.appendChild(button(name, hint, () => {
+            if (entry.loop) audio.music(name)
+            else audio.stinger(name)
+            note(`${entry.loop ? 'music' : 'stinger'}('${name}')`)
+          }))
+        }
+        musicRow.appendChild(button('stop music', '', () => { audio.music(null); note('music(null)') }))
+
+        const groups = {}
+        for (const [name, entry] of Object.entries(manifest.sfx)) (groups[entry.group] ||= []).push([name, entry])
+        const holder = $('groups')
+        holder.replaceChildren()
+        for (const [group, items] of Object.entries(groups)) {
+          const section = document.createElement('section')
+          const title = document.createElement('h2')
+          title.textContent = TITLES[group] || group
+          const row = document.createElement('div')
+          row.className = 'row'
+          const play = (name) => {
+            const pan = Number($('pan').value)
+            audio.sfx(name, { pan })
+            note(`sfx('${name}'${pan ? `, { pan: ${pan} }` : ''})`)
+          }
+          const seen = new Set()
+          for (const [name, entry] of items) {
+            const stem = name.replace(/_\d+$/, '')
+            if (stem !== name && manifest.variants[stem] && !seen.has(stem)) {
+              seen.add(stem)
+              row.appendChild(button(stem, `random of ${manifest.variants[stem].length}`, () => play(stem)))
+            }
+            row.appendChild(button(name, `${entry.duration.toFixed(2)} s`, () => play(name)))
+          }
+          section.append(title, row)
+          holder.appendChild(section)
+        }
+      }
+
+      function showVolumes() {
+        const v = audio.getVolumes()
+        for (const key of ['master', 'music', 'sfx']) {
+          $(`vol-${key}`).value = v[key]
+          $(`out-${key}`).textContent = v[key].toFixed(2)
+        }
+        $('mute').classList.toggle('on', audio.isMuted())
+        $('mute').textContent = audio.isMuted() ? 'Muted' : 'Mute'
+      }
+
+      // Under Vite the files in public/ are served from the root. Without a bundler this page
+      // is looking at the web folder as it is on disk, where they sit in public/audio/.
+      const bundled = typeof import.meta.env === 'object' && import.meta.env !== null
+      $('start').addEventListener('click', async () => {
+        status.textContent = 'Loading the manifest...'
+        await audio.init(bundled ? {} : { baseUrl: './public/audio/' })
+        if (!audio.ready) {
+          status.textContent = 'Audio could not start (no manifest found next to this page, or no audio device). Is web/public/audio built?'
+          return
+        }
+        build()
+        const m = audio.manifest
+        status.textContent = `Ready: ${Object.keys(m.music).length} tracks, ${Object.keys(m.sfx).length} effects.`
+        audio.sfx('ui_confirm')
+      })
+      $('mute').addEventListener('click', () => { audio.setMuted(!audio.isMuted()); showVolumes() })
+      for (const key of ['master', 'music', 'sfx']) {
+        $(`vol-${key}`).addEventListener('input', (event) => { audio.setVolumes({ [key]: Number(event.target.value) }); showVolumes() })
+      }
+      $('scale').addEventListener('input', (event) => {
+        const value = Number(event.target.value)
+        $('out-scale').textContent = value
+        audio.setTimeScale(value)
+      })
+      $('pan').addEventListener('input', (event) => { $('out-pan').textContent = event.target.value })
+      $('slow').addEventListener('click', () => {
+        audio.sfx('slowmo_in')
+        audio.setTimeScale(0.2)
+        note('slowmo_in, setTimeScale(0.2)')
+        setTimeout(() => {
+          audio.sfx('slowmo_out')
+          audio.setTimeScale(1)
+          $('scale').value = 1
+          $('out-scale').textContent = 1
+          note('slowmo_out, setTimeScale(1)')
+        }, 2000)
+      })
+      let heart = false
+      $('heart').addEventListener('click', (event) => {
+        heart = !heart
+        audio.loop('heartbeat', heart)
+        event.currentTarget.classList.toggle('on', heart)
+        note(`loop('heartbeat', ${heart})`)
+      })
+      showVolumes()
+      window.audio = audio
+    </script>
+  </body>
+</html>

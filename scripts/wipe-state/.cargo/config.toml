@@ -1,0 +1,5 @@
+# The project sits deep in the file system, and a target folder in here would take
+# build scripts past the 260 characters Windows allows a path. So this builds into the
+# game's own target folder: target/near/wipe_state.wasm.
+[build]
+target-dir = "../../target"

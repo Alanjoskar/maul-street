@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Maul Street · menus against the mock</title>
+    <meta name="theme-color" content="#0b0907" />
+    <!--
+      The menus on their own: a mock api, the real rules module, and a stand-in for the 3D stage.
+
+      ?connected=0     start on the title screen (connecting then leads to the hub)
+      ?registered=0    the account has no beasts yet: connecting leads to the draft
+      ?social=1        NEAR Social is already on
+      ?flaky=0         no random failures (default: one action in ten fails)
+      ?delay=80        how long a mock transaction takes, in ms (default 400)
+      ?sim=1           the Street stirs every five seconds (ticker, prices, a den's bankroll)
+      ?duel=1          the page loads in the middle of an unfinished duel
+      ?fight=900       how long the stand-in fight lasts, in ms
+      ?tab=pit&pit=duels   open a tab straight away
+
+      window.maulDev = { api, app, bridge, core, calls, force, leaveUnfinished }   for the console and the test scripts:
+        maulDev.force = 'win' | 'lose' | 'void'   decides the next stand-in fight (otherwise the rules do)
+        maulDev.leaveUnfinished = true            the next stand-in fight ends part-way
+        maulDev.app.go('pit', { pitView: 'duels' })   opens a tab
+        maulDev.api.dev.rivalAccepts()            a rival takes your open challenge
+        maulDev.calls.stage / .fights / .sounds   what the menus asked of the game, in order
+      Buttons carry data-act="..." and fields data-field="..." for scripts.
+    -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0b0907;
+        overflow: hidden;
+      }
+      /* Where the WebGL canvas will be: a dim pit under one warm lamp. */
+      #stage {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 34% 9% at 50% 79%, rgba(255, 160, 80, 0.2), transparent 72%),
+          radial-gradient(ellipse 58% 62% at 50% 40%, #33200f 0%, #1c120b 42%, #0b0907 76%);
+      }
+      #hud,
+      #ui {
+        position: fixed;
+        inset: 0;
+      }
+      #hud {
+        pointer-events: none;
+      }
+      /* The rectangle the menus hand to bridge.stage.frame(el). */
+      #dev-stage {
+        position: fixed;
+        display: none;
+        box-sizing: border-box;
+        border: 1px dashed rgba(216, 165, 72, 0.4);
+        background:
+          radial-gradient(ellipse 30% 7% at 50% 88%, rgba(255, 170, 90, 0.22), transparent 70%),
+          rgba(216, 165, 72, 0.025);
+        pointer-events: none;
+        font: 600 11px/1.4 'Barlow Condensed', 'Arial Narrow', sans-serif;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(216, 165, 72, 0.75);
+      }
+      #dev-stage span {
+        position: absolute;
+        top: 8px;
+        left: 10px;
+        right: 10px;
+      }
+      #dev-stage i {
+        position: absolute;
+        left: 50%;
+        bottom: 12%;
+        width: 34%;
+        aspect-ratio: 1 / 1.05;
+        transform: translateX(-50%);
+        border: 1px dashed rgba(239, 230, 214, 0.16);
+        border-radius: 46% 46% 40% 40%;
+      }
+      #dev-fight {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        font: 400 34px/1 'Bebas Neue', Impact, sans-serif;
+        letter-spacing: 0.2em;
+        color: rgba(239, 230, 214, 0.55);
+        pointer-events: none;
+      }
+      body.in-fight #dev-fight {
+        display: grid;
+      }
+      body.in-fight #dev-stage {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <div id="dev-stage"><span></span><i></i></div>
+    <div id="dev-fight">The 3D fight plays here (dev stand-in)</div>
+    <div id="hud"></div>
+    <div id="ui"></div>
+    <script type="module" src="/src/ui/dev/dev-main.js"></script>
+  </body>
+</html>
